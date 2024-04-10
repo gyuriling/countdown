@@ -4,13 +4,84 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Random Number Countdown</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #countdown {
+            font-size: 18px; /* 작은 글씨 */
+            color: #888; /* 회색 */
+            margin-bottom: 20px; /* 밑으로 내림 */
+        }
+
+        #randomNumber {
+            font-size: 36px; /* 큰 글씨 */
+            color: #000; /* 검은색 */
+        }
+
+        button {
+            margin-top: 20px; /* 버튼 위로 조금 내림 */
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>Random Number Countdown</h1>
-        <div id="countdown"></div>
+        <div id="countdown">3</div>
+        <div id="randomNumber">0</div>
+        <button id="stopButton">Stop Countdown</button>
+        <button id="startButton">Start Countdown</button>
     </div>
-    <script src="script.js"></script>
+    <script>
+        var timer; // 전역 변수로 타이머 설정
+
+        function startCountdown() {
+            clearInterval(timer); // 타이머가 이미 실행 중인 경우를 위해 클리어
+
+            var count = 3; // 초기 카운트다운 값
+            var countdownElement = document.getElementById("countdown");
+            var randomNumberElement = document.getElementById("randomNumber");
+            var stopButton = document.getElementById("stopButton");
+
+            // 카운트다운 표시
+            countdownElement.textContent = count;
+
+            // 카운트다운 시작
+            timer = setInterval(function() {
+                // 카운트가 0이 되면 랜덤 숫자를 선택하고 다시 카운트다운 시작
+                if (count <= 0) {
+                    var randomNumber = Math.floor(Math.random() * 20) + 1;
+                    randomNumberElement.textContent = randomNumber;
+                    count = 3; // 다시 카운트다운을 위해 초기화
+                } else {
+                    // 카운트 다운 중에는 숫자를 표시하고 카운트를 감소시킴
+                    countdownElement.textContent = count;
+                    count--;
+                }
+            }, 1000); // 1초마다 업데이트
+
+            // 중지 버튼 클릭 시 카운트다운 중지
+            stopButton.addEventListener("click", function() {
+                clearInterval(timer);
+            });
+        }
+
+        // 페이지가 로드될 때 카운트다운 시작
+        window.onload = startCountdown;
+
+        // 재시작 버튼 클릭 시 카운트다운 재시작
+        document.getElementById("startButton").addEventListener("click", startCountdown);
+    </script>
 </body>
 </html>
